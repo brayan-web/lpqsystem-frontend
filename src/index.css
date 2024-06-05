@@ -7,3 +7,10 @@
 *{
   font-family: 'Nunito', sans-serif;
 }
+
+.text-primary{
+  color: #079284;
+}
+.bg-primary{
+  color: #079284;
+}
