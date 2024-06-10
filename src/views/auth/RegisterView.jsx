@@ -1,15 +1,20 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import Swal from "sweetalert2";
 import { ErrorIcon } from "../../components/Icons";
 import classNames from "classnames";
+import useAuth from "../../hooks/useAuth";
 
 const RegisterView = () => {
+  const navigate = useNavigate();
   const [isNameEditing, setIsNameEditing] = useState(false);
   const [isEmailEditing, setIsEmailEditing] = useState(false);
   const [isPasswordEditing, setIsPasswordEditing] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState(null);
+  const { signUp } = useAuth();
   const formik = useFormik({
     initialValues: { name: "", email: "", password: "" },
     validationSchema: Yup.object({
@@ -23,15 +28,36 @@ const RegisterView = () => {
     }),
     onSubmit: async (values) => {
       setIsSubmitting(true);
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      console.log(values);
-      setIsSubmitting(false);
+      setError(null);
+      try {
+        const resul = await signUp(values);
+        const { ok, msg } = resul;
+        if (!ok) {
+          setError(msg);
+        } else {
+          console.log(msg);
+          navigate("/");
+          Swal.fire({
+            icon: 'success',
+            title: 'Registro exitoso!',
+            text: msg
+          })
+
+        }
+      } catch (error) {
+        setError("Ocurrio un error inesperado . Por favor, intentalo de nuevo");
+      } finally {
+        setIsSubmitting(false);
+      }
     },
   });
 
   return (
     <form className="space-y-5" onSubmit={formik.handleSubmit}>
       <h1 className="text-gray-900 text-center text-2xl py-2">Crear Cuenta</h1>
+      { error && (
+        <div className="bg-[#D89D31] w-full px-3 py-2 rounded-md font-bold">{error}</div>
+      ) }
       <div className="flex flex-col gap-3">
         <label className="font-normal text-md text-gray-500" htmlFor="name">
           Nombre
@@ -138,14 +164,12 @@ const RegisterView = () => {
         ) : null}
       </div>
       <button
-    disabled={isSubmitting}
-      type="submit"
-      className="flex items-center justify-center bg-[#079284] p-3 w-full rounded-3xl text-white text-md cursor-pointer transition duration-300 hover:opacity-75"
-     
-    >
-      
-      {isSubmitting ? <div id="loading"></div> : "Crear Cuenta"}
-    </button>
+        disabled={isSubmitting}
+        type="submit"
+        className="flex items-center justify-center bg-[#079284] p-3 w-full rounded-3xl text-white text-md cursor-pointer transition duration-300 hover:opacity-75"
+      >
+        {isSubmitting ? <div id="loading"></div> : "Crear Cuenta"}
+      </button>
       <hr className="border-t border-gray-300 my-4" />
       <nav className="text-center">
         <Link to={"/"} className="text-[#079284] text-sm">
