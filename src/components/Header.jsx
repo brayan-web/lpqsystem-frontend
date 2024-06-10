@@ -6,9 +6,12 @@ import {
     MenuItems,
     Transition,
   } from "@headlessui/react";
-import Logo from '../components/Logo'
+import Logo from '../components/Logo';
+import useAuth from "../hooks/useAuth";
 
 const Header = () => {
+
+  const { logOut } = useAuth();
   return (
     <header className="bg-white py-4 shadow-2xl absolute top-0 w-full">
             <div className="max-w-screen-2xl px-5  mx-auto flex flex-row justify-between items-center">
@@ -53,6 +56,7 @@ const Header = () => {
                         <MenuItem>
                           {({ active }) => (
                             <a
+                              onClick={logOut}
                               href="#"
                               className={`${
                                 active ? "bg-gray-100" : ""

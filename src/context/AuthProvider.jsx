@@ -1,11 +1,16 @@
-import { createContext } from "react";
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import { createContext, useState, useEffect } from "react";
+import { Navigate, useNavigate } from "react-router-dom";
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "firebase/auth";
 import {  auth, firestore } from "../firebase/config"
 import { doc, setDoc } from "firebase/firestore";
 import firebaseErrors from "../utils/firebaseErrors";
 const AuthContext = createContext();
 
 const AuthProvider = ({children}) => {
+    const [ user, setUser ] = useState(null);
+    const [ loading, setLoading ] = useState(false);
+    const navigate = useNavigate();
+
     const signUp = async(newUser) => {
         const { name, email, password } = newUser;
         try {
@@ -30,10 +35,41 @@ const AuthProvider = ({children}) => {
         }
     }
 
+    const logOut = async() => {
+        await signOut(auth);
+        setUser(null);
+        navigate('/', { replace: true })
+    }
+
+const Login = async(user) => {
+        const { email, password } = user;
+        try {
+            await signInWithEmailAndPassword(auth, email, password);
+          return { ok: true, msg: 'Inicio exitoso' }
+
+        } catch (error) {
+            console.log(error)
+           let errorMessage = firebaseErrors[error.code] || 'Ocurrio un error inesperado';
+           return { ok: false, msg: errorMessage }
+
+            
+        }
+}
+
+
+useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+        setUser(user);
+        setLoading(false)
+    });
+
+    return () => unsubscribe()
+}, [])
+
 
 
   return (
-    <AuthContext.Provider value={{signUp}}>
+    <AuthContext.Provider value={{signUp, Login, user, loading, logOut}}>
         {children}
     </AuthContext.Provider>
   )
