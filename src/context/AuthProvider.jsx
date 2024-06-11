@@ -1,5 +1,5 @@
 import { createContext, useState, useEffect } from "react";
-import { Navigate, useNavigate } from "react-router-dom";
+import {  useNavigate } from "react-router-dom";
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "firebase/auth";
 import {  auth, firestore } from "../firebase/config"
 import { doc, setDoc } from "firebase/firestore";
@@ -8,7 +8,7 @@ const AuthContext = createContext();
 
 const AuthProvider = ({children}) => {
     const [ user, setUser ] = useState(null);
-    const [ loading, setLoading ] = useState(false);
+    const [ loading, setLoading ] = useState(true);
     const navigate = useNavigate();
 
     const signUp = async(newUser) => {
@@ -45,6 +45,8 @@ const Login = async(user) => {
         const { email, password } = user;
         try {
             await signInWithEmailAndPassword(auth, email, password);
+        navigate('/home', { replace: true })
+
           return { ok: true, msg: 'Inicio exitoso' }
 
         } catch (error) {

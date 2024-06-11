@@ -8,14 +8,19 @@ import {
   } from "@headlessui/react";
 import Logo from '../components/Logo';
 import useAuth from "../hooks/useAuth";
+import useUser from "../hooks/useUser";
 
 const Header = () => {
 
   const { logOut } = useAuth();
+  const { userData } = useUser();
+  const name = userData && userData.nombre ? userData.nombre : '';
+  
+ 
   return (
-    <header className="bg-white py-4 shadow-2xl absolute top-0 w-full">
-            <div className="max-w-screen-2xl px-5  mx-auto flex flex-row justify-between items-center">
-              <div className="w-48 "><Logo /></div>
+    <header className="bg-white py-3 shadow-2xl absolute top-0 w-full">
+            <div className="w-full px-10   mx-auto flex flex-row justify-between items-center">
+              <div className="w-40 "><Logo /></div>
               <Menu as="div" className="relative inline-block text-left">
                 <div>
                   <MenuButton
@@ -23,9 +28,9 @@ const Header = () => {
                     href="#"
                     id="dropdownMenuButton2"
                   >
-                    <span className="px-5 text-gray-600">Brayan</span>
+                    <span className="px-5 text-gray-600">{name}</span>
                     <img
-                      src="https://tecdn.b-cdn.net/img/new/avatars/2.jpg"
+                      src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQUuZfNgsoQy6_mFR7rZ02z1grXiL8zFYzlevcxkO59PzSInG5g&s"
                       className="rounded-full w-12 h-12"
                       alt=""
                       loading="lazy"

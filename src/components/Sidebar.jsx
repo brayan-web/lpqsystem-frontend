@@ -1,7 +1,7 @@
 import { useState, createContext, useContext } from "react";
 import { ChevronLeft, ChevronDown } from "./Icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTachometerAlt } from "@fortawesome/free-solid-svg-icons";
+import { faFolder, faTachometerAlt } from "@fortawesome/free-solid-svg-icons";
 
 
 export default function Sidebar() {
@@ -16,7 +16,7 @@ export default function Sidebar() {
     setShowMenu((prevShowMenu) => !prevShowMenu);
   };
   return (
-    <aside className="h-screen  ">
+    <aside className="h-screen">
       <nav className="flex h-full flex-col items-center bg-[#079284] shadow-sm py-24">
     
           <ul className="flex-1 px-3">
@@ -30,7 +30,7 @@ export default function Sidebar() {
       <FontAwesomeIcon icon={faTachometerAlt} className="text-white text-opacity-30 size-6" />
       <span
         className={`overflow-hidden transition-all text-white text-opacity-80 ${
-          expanded ? "w-44 ml-3" : "w-0"
+          expanded ? "w-36 ml-3" : "w-0"
         }`}
       >
         Inicio
@@ -39,7 +39,7 @@ export default function Sidebar() {
 
       {!expanded && (
         <div
-          className={`absolute left-full rounded-md px-2 py-1 ml-6 bg-[#079284]  text-white text-md invisible opacity-20 -translate-x-3 transition-all group-hover:visible group-hover:opacity-100 group-hover:translate-x-0`}
+          className={`absolute left-full rounded-md px-2 py-1 ml-6 bg-[#079284]  text-white text-sm invisible opacity-20 -translate-x-3 transition-all group-hover:visible group-hover:opacity-100 group-hover:translate-x-0`}
         >
           Inicio
         </div>
@@ -47,7 +47,7 @@ export default function Sidebar() {
     </li>
     <hr className="py-2 border-t border-white border-opacity-15"/>
       <li onClick={handleToggleMenu} className={`${expanded ? 'text-left' : 'text-center'} transition duration-300`}>
-        <span className={`uppercase text-white text-opacity-30 text-sm`}>menu</span>
+        <span className={`uppercase text-white text-opacity-30 text-xs`}>menu</span>
       </li>
       <li
       className={`relative flex items-center py-2 px-3 my-1 font-medium cursor-pointer transition-colors group ${
@@ -56,10 +56,10 @@ export default function Sidebar() {
           : "hover:bg-white hover:bg-opacity-30 text-gray-600"
       }`}
     >
-      <FontAwesomeIcon icon={faTachometerAlt} className="text-white text-opacity-30 size-6" />
+      <FontAwesomeIcon icon={faFolder} className="text-white text-opacity-30 size-6" />
       <span
-        className={`overflow-hidden transition-all text-white text-opacity-80 ${
-          expanded ? "w-52 ml-3" : "w-0"
+        className={`overflow-hidden text-sm transition-all text-white text-opacity-80 ${
+          expanded ? "w-36 ml-3" : "w-0"
         }`}
       >
         Casos

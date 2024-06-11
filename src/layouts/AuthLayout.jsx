@@ -1,5 +1,7 @@
 import { Outlet } from "react-router-dom";
 import Logo from "../components/Logo";
+
+
 const AuthLayout = () => {
   return (
     <>
@@ -10,7 +12,10 @@ const AuthLayout = () => {
              <Logo className="border" />
             </div>
             <div className="w-full lg:w-1/2">
+        
               <Outlet />
+                
+                
             </div>
           </div>
         </div>
